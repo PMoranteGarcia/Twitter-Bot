@@ -1,0 +1,90 @@
+import random
+import tweepy
+import math
+
+import schedule
+import time
+
+import os
+import sys
+
+import cv2
+import subprocess
+
+auth = tweepy.OAuthHandler('x', 'x')
+auth.set_access_token('x', 'x')
+api = tweepy.API(auth)
+
+
+def finalScript():
+    countepisode = open('F:/Heartstopper/S1/episodes.txt','r')
+    episode = countepisode.readlines();
+    episode = int(episode[0])
+    nameEp(episode)
+        
+    countfile = open('F:/Heartstopper/S1/Episode'+str(episode)+'/framecount.txt','r')
+    count = countfile.readlines()
+    count = int(count[0])
+    text = "Heartstopper - Episode "+str(episode)+": "+name+"\n\nFrame "+ str(count) +" of "+str(frames)+"\n\n#RenewHeartstopper"
+
+    if (count) < 10:
+        filename = "F:/Heartstopper/S1/Episode"+str(episode)+"/Frame_ 000"+str(count)+".JPG"
+        tweet(text, filename)
+    elif (count) < 100:
+        filename = "F:/Heartstopper/S1/Episode"+str(episode)+"/Frame_ 00"+str(count)+".JPG"
+        tweet(text, filename)
+    elif (count) < 1000:
+        filename = "F:/Heartstopper/S1/Episode"+str(episode)+"/Frame_ 0"+str(count)+".JPG"
+        tweet(text, filename)
+    elif (count) > frames:
+        episode+= 1
+        episode_marker = open('F:/Heartstopper/S1/episodes.txt','w+')
+        episode_marker.write(str(episode))
+        episode_marker.close()
+        finalScript()
+    else:
+        filename = "F:/Heartstopper/S1/Episode"+str(episode)+"/Frame_ "+str(count)+".JPG"
+        tweet(text, filename)
+
+    countepisode.close()
+    countfile.close()
+
+    file_marker = open('F:/Heartstopper/S1/Episode'+str(episode)+'/framecount.txt','w+')
+    file_marker.write(str(count+1))
+    file_marker.close()
+
+def tweet(text, filepath):
+    api.update_status_with_media(text, filepath)
+
+def nameEp(episode):
+    if episode == 1:
+        frames = 1408
+        name = "Meet"
+    elif episode == 2:
+        frames = 1678
+        name = "Crush"
+    elif episode == 3:
+        frames = 1546
+        name = "Kiss"
+    elif episode == 4:
+        frames = 1519
+        name = "Secret"
+    elif episode == 5:
+        frames = 1382
+        name = "Friend"
+    elif episode == 6:
+        frames = 1559
+        name = "Girls"
+    elif episode == 7:
+        frames = 1364
+        name = "Bully"
+    elif episode == 8:
+        frames = 1740
+        name = "Boyfriend"
+
+
+schedule.every(600).seconds.do(finalScript)
+
+while 1:
+	schedule.run_pending()
+	time.sleep(1)
