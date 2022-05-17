@@ -20,7 +20,7 @@ def finalScript():
     countepisode = open('F:/Heartstopper/S1/episodes.txt','r')
     episode = countepisode.readlines();
     episode = int(episode[0])
-    nameEp(episode)
+    name = nameEp(episode)
         
     countfile = open('F:/Heartstopper/S1/Episode'+str(episode)+'/framecount.txt','r')
     count = countfile.readlines()
@@ -81,6 +81,7 @@ def nameEp(episode):
     elif episode == 8:
         frames = 1740
         name = "Boyfriend"
+return name
 
 
 schedule.every(600).seconds.do(finalScript)
